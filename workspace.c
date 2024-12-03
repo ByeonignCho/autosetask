@@ -101,7 +101,15 @@ int main() {
     while (1) {
         printBoard();
         printf("Enter action (o for open, f for flag) and coordinates (x y): ");
-        scanf(" %c %d %d", &action, &x, &y);
+        if (scanf(" %c %d %d", &action, &x, &y) != 3) {
+            printf("Invalid input. Please enter action and coordinates in the format: o 3 4 or f 2 5\n");
+            while (getchar() != '\n'); // Clear the input buffer
+            continue;
+        }
+        if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
+            printf("Invalid coordinates. Please enter values between 0 and %d.\n", SIZE - 1);
+            continue;
+        }
         if (action == 'o') {
             if (board[x][y].isMine) {
                 printf("Game Over! You hit a mine.\n");
@@ -110,6 +118,8 @@ int main() {
             openCell(x, y);
         } else if (action == 'f') {
             flagCell(x, y);
+        } else {
+            printf("Invalid action. Use 'o' for open and 'f' for flag.\n");
         }
     }
 
